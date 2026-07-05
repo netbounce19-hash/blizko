@@ -294,6 +294,14 @@ export function AudioPlayer({
           {isLoaded ? formatDuration(Math.floor(duration)) : "—:——"}
         </p>
       )}
+
+      {/* Дисклеймер */}
+      <p
+        className="text-xs text-center mt-4"
+        style={{ color: "var(--color-text-secondary)", opacity: 0.8 }}
+      >
+        💡 Рекомендуем надеть наушники, найти спокойное место где вы останетесь наедине с собой
+      </p>
     </div>
   );
 }

@@ -9,6 +9,7 @@ const footerSections = [
     title: "Платформа",
     links: [
       { href: "/library", label: "Библиотека аудио" },
+      { href: "/feed", label: "Статьи" },
       { href: "/subscribe", label: "Подписка" },
       { href: "/ask", label: "Задать вопрос" },
       { href: "/booking", label: "Консультация" },

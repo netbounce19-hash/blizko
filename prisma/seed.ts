@@ -115,6 +115,7 @@ async function main() {
   await prisma.booking.deleteMany();
   await prisma.contactMessage.deleteMany();
   await prisma.user.deleteMany();
+  await prisma.article.deleteMany();
 
   // Создание треков
   for (const track of tracks) {
@@ -123,7 +124,39 @@ async function main() {
     });
   }
 
+  // Создание статей (Feed)
+  const articles = [
+    {
+      title: "Как научиться слышать себя в шумном мире",
+      slug: "kak-nauchitsya-slyshat-sebya",
+      excerpt: "Практические советы о том, как фильтровать информационный шум и возвращаться к своим истинным потребностям.",
+      content: "Здесь будет полный текст статьи. Вы можете добавлять сюда длинные тексты, рассказывать истории из практики и делиться полезными упражнениями.",
+      author: "Любовь Горская-Скрыпник"
+    },
+    {
+      title: "Телесные блоки: как эмоции застревают в теле",
+      slug: "telesnie-bloki",
+      excerpt: "Почему мы чувствуем тяжесть в плечах и ком в горле, и как телесно-ориентированная терапия помогает с этим справиться.",
+      content: "Здесь будет полный текст статьи о связи эмоций и телесных реакций.",
+      author: "Любовь Горская-Скрыпник"
+    },
+    {
+      title: "Что делать, если нет сил даже на отдых?",
+      slug: "chto-delat-esli-net-sil",
+      excerpt: "Разбираемся в стадиях выгорания и учимся восполнять ресурс с помощью микро-шагов.",
+      content: "Здесь будет полный текст статьи про эмоциональное выгорание.",
+      author: "Любовь Горская-Скрыпник"
+    }
+  ];
+
+  for (const article of articles) {
+    await prisma.article.create({
+      data: article,
+    });
+  }
+
   console.log(`✅ Создано ${tracks.length} аудио-роликов`);
+  console.log(`✅ Создано ${articles.length} статей`);
   console.log("🌱 Заполнение завершено!");
 }
 

@@ -7,6 +7,7 @@ import { Menu, X, User, Headphones } from "lucide-react";
 /* Навигационные ссылки платформы */
 const navLinks = [
   { href: "/library", label: "Библиотека" },
+  { href: "/feed", label: "Статьи" },
   { href: "/about", label: "О специалисте" },
   { href: "/subscribe", label: "Подписка" },
   { href: "/ask", label: "Задать вопрос" },
