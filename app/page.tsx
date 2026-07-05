@@ -11,7 +11,7 @@ import {
   Heart,
   Sparkles,
   BookOpen,
-  Youtube,
+  PlayCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { AudioCard } from "@/components/ui/AudioCard";
@@ -327,7 +327,7 @@ export default function HomePage() {
           >
             <div className="relative z-10 max-w-xl text-center md:text-left">
               <div className="flex items-center gap-3 mb-4 justify-center md:justify-start">
-                <Youtube className="w-7 h-7" style={{ color: "var(--color-accent-2)" }} strokeWidth={1.5} />
+                <PlayCircle className="w-7 h-7" style={{ color: "var(--color-accent-2)" }} strokeWidth={1.5} />
                 <h3 
                   className="text-2xl md:text-3xl" 
                   style={{ fontFamily: "var(--font-heading)", color: "var(--color-text)" }}
@@ -350,7 +350,7 @@ export default function HomePage() {
                 rel="noopener noreferrer"
               >
                 <Button variant="secondary" size="lg">
-                  <Youtube className="w-5 h-5" strokeWidth={1.5} />
+                  <PlayCircle className="w-5 h-5" strokeWidth={1.5} />
                   Перейти на канал
                 </Button>
               </a>
