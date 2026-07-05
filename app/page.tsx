@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Headphones,
   ArrowRight,
@@ -117,7 +118,7 @@ export default function HomePage() {
             </div>
 
             {/* Правая колонка - Лента статей */}
-            <div className="lg:pl-12 xl:pl-20">
+            <div className="lg:pl-12 xl:pl-20 lg:pt-8 xl:pt-12">
               <div className="flex items-center justify-between mb-6">
                 <h3 
                   className="text-lg md:text-xl font-medium" 
@@ -237,35 +238,23 @@ export default function HomePage() {
       >
         <div className="container-site">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-            {/* Фото-заглушка */}
+            {/* Фото специалиста */}
             <div
-              className="aspect-[4/5] max-w-sm mx-auto lg:mx-0 rounded-2xl overflow-hidden"
+              className="aspect-[4/5] max-w-sm mx-auto lg:mx-0 rounded-2xl overflow-hidden relative"
               style={{
                 backgroundColor: "var(--color-border)",
                 borderRadius: "var(--radius-lg)",
                 boxShadow: "var(--shadow-card)",
               }}
             >
-              <div className="w-full h-full flex items-center justify-center">
-                <div className="text-center p-6">
-                  <div
-                    className="w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center"
-                    style={{ backgroundColor: "rgba(124, 152, 133, 0.1)" }}
-                  >
-                    <Heart
-                      className="w-8 h-8"
-                      style={{ color: "var(--color-accent)" }}
-                      strokeWidth={1.5}
-                    />
-                  </div>
-                  <p
-                    className="text-sm"
-                    style={{ color: "var(--color-text-secondary)" }}
-                  >
-                    Фото специалиста
-                  </p>
-                </div>
-              </div>
+              <Image 
+                src="/images/specialist.jpg" 
+                alt="Любовь Горская-Скрыпник" 
+                fill 
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                priority
+              />
             </div>
 
             <div>

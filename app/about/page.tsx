@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { specialistInfo } from "@/lib/mock-data";
+import Image from "next/image";
 
 /* Страница «О специалисте» */
 
@@ -59,26 +60,14 @@ export default function AboutPage() {
                 boxShadow: "var(--shadow-card)",
               }}
             >
-              <div className="w-full h-full flex items-center justify-center">
-                <div className="text-center p-6">
-                  <div
-                    className="w-16 h-16 rounded-full mx-auto mb-3 flex items-center justify-center"
-                    style={{ backgroundColor: "rgba(124, 152, 133, 0.1)" }}
-                  >
-                    <Heart
-                      className="w-7 h-7"
-                      style={{ color: "var(--color-accent)" }}
-                      strokeWidth={1.5}
-                    />
-                  </div>
-                  <p
-                    className="text-sm"
-                    style={{ color: "var(--color-text-secondary)" }}
-                  >
-                    Фото специалиста
-                  </p>
-                </div>
-              </div>
+              <Image 
+                src="/images/specialist.jpg" 
+                alt="Любовь Горская-Скрыпник" 
+                fill 
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 33vw"
+                priority
+              />
             </div>
           </div>
 
