@@ -16,7 +16,7 @@ import { AudioCard } from "@/components/ui/AudioCard";
 import { AudioPlayer } from "@/components/ui/AudioPlayer";
 import { Modal, BottomSheet } from "@/components/ui/Modal";
 import { SubscriptionPaywall } from "@/components/ui/SubscriptionPaywall";
-import { mockTracks, specialistInfo } from "@/lib/mock-data";
+import { mockTracks, specialistInfo, mockArticles } from "@/lib/mock-data";
 
 /* Главная страница платформы «БЛИЗКО» */
 
@@ -47,49 +47,133 @@ export default function HomePage() {
           }}
         />
         <div className="container-site relative">
-          <div className="py-20 md:py-28 lg:py-36 max-w-2xl">
-            <p
-              className="text-sm font-medium mb-4 tracking-wide uppercase"
-              style={{ color: "var(--color-accent)" }}
-            >
-              Аудио-терапия
-            </p>
-            <h1
-              className="text-4xl md:text-5xl lg:text-6xl mb-6"
-              style={{
-                fontFamily: "var(--font-heading)",
-                fontWeight: 400,
-                color: "var(--color-text)",
-                lineHeight: 1.15,
-              }}
-            >
-              Клуб поддержки{" "}
-              <span style={{ color: "var(--color-accent)" }}>БЛИЗКО</span>
-            </h1>
-            <p
-              className="text-lg md:text-xl mb-8 leading-relaxed max-w-lg"
-              style={{
-                color: "var(--color-text-secondary)",
-                lineHeight: 1.7,
-              }}
-            >
-              Аудиотерапия от практикующего специалиста Любови Горской-Скрыпник. 
-              Короткие терапевтические аудиоролики: тревога, отношения, самооценка, сон — в вашем темпе и пространстве.
-              Вы также можете прислать ваши вопросы анонимно и получить развернутые ответы в формате аудиопрактики.
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <Link href="/library">
-                <Button variant="primary" size="lg">
-                  <Headphones className="w-4 h-4" strokeWidth={1.5} />
-                  Начать слушать
-                </Button>
-              </Link>
-              <Link href="/ask">
-                <Button variant="outline" size="lg">
-                  <MessageCircle className="w-4 h-4" strokeWidth={1.5} />
-                  Задать вопрос
-                </Button>
-              </Link>
+          <div className="py-16 md:py-24 lg:py-32 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+            {/* Левая колонка - Текст и кнопки */}
+            <div className="max-w-xl">
+              <p
+                className="text-sm font-medium mb-4 tracking-wide uppercase"
+                style={{ color: "var(--color-accent)" }}
+              >
+                Аудио-терапия
+              </p>
+              <h1
+                className="text-4xl md:text-5xl lg:text-6xl mb-6"
+                style={{
+                  fontFamily: "var(--font-heading)",
+                  fontWeight: 400,
+                  color: "var(--color-text)",
+                  lineHeight: 1.15,
+                }}
+              >
+                Клуб поддержки{" "}
+                <span style={{ color: "var(--color-accent)" }}>БЛИЗКО</span>
+              </h1>
+              <p
+                className="text-lg md:text-xl mb-8 leading-relaxed"
+                style={{
+                  color: "var(--color-text-secondary)",
+                  lineHeight: 1.7,
+                }}
+              >
+                Аудиотерапия от практикующего специалиста Любови Горской-Скрыпник. 
+                Короткие терапевтические аудиоролики: тревога, отношения, самооценка, сон — в вашем темпе и пространстве.
+              </p>
+              
+              <div className="flex flex-wrap gap-3 mb-10">
+                <Link href="/library">
+                  <Button variant="primary" size="lg">
+                    <Headphones className="w-4 h-4" strokeWidth={1.5} />
+                    Начать слушать
+                  </Button>
+                </Link>
+                <Link href="/ask">
+                  <Button variant="outline" size="lg">
+                    <MessageCircle className="w-4 h-4" strokeWidth={1.5} />
+                    Задать вопрос
+                  </Button>
+                </Link>
+              </div>
+
+              {/* Сноска - Дисклеймер */}
+              <div 
+                className="flex items-start gap-3 p-4 rounded-2xl" 
+                style={{ 
+                  backgroundColor: "rgba(124, 152, 133, 0.05)",
+                  border: "1px solid rgba(124, 152, 133, 0.15)"
+                }}
+              >
+                <Shield 
+                  className="w-5 h-5 flex-shrink-0 mt-0.5" 
+                  style={{ color: "var(--color-accent)" }} 
+                  strokeWidth={1.5} 
+                />
+                <p 
+                  className="text-sm leading-relaxed" 
+                  style={{ color: "var(--color-text-secondary)" }}
+                >
+                  Вы также можете прислать ваши вопросы анонимно и получить развернутые ответы в формате аудиопрактики.
+                </p>
+              </div>
+            </div>
+
+            {/* Правая колонка - Лента статей */}
+            <div className="lg:pl-12 xl:pl-20">
+              <div className="flex items-center justify-between mb-6">
+                <h3 
+                  className="text-lg md:text-xl font-medium" 
+                  style={{ fontFamily: "var(--font-heading)", color: "var(--color-text)" }}
+                >
+                  Свежие статьи
+                </h3>
+                <Link 
+                  href="/feed" 
+                  className="text-xs font-medium uppercase tracking-wide hover:opacity-80 transition-opacity flex items-center gap-1" 
+                  style={{ color: "var(--color-accent)" }}
+                >
+                  Все статьи <ArrowRight className="w-3 h-3" strokeWidth={2} />
+                </Link>
+              </div>
+              
+              <div className="space-y-4">
+                {mockArticles.slice(0, 3).map(article => (
+                  <Link href={`/feed/${article.slug}`} key={article.id} className="block group">
+                    <article 
+                      className="p-5 rounded-2xl transition-all duration-300" 
+                      style={{ 
+                        backgroundColor: "var(--color-surface)", 
+                        border: "1px solid var(--color-border)" 
+                      }} 
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.borderColor = "var(--color-accent)";
+                        e.currentTarget.style.transform = "translateY(-2px)";
+                        e.currentTarget.style.boxShadow = "var(--shadow-card)";
+                      }} 
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.borderColor = "var(--color-border)";
+                        e.currentTarget.style.transform = "none";
+                        e.currentTarget.style.boxShadow = "none";
+                      }}
+                    >
+                      <div className="flex items-center gap-2 mb-2.5 text-[10px] font-medium uppercase tracking-wider" style={{ color: "var(--color-text-secondary)" }}>
+                        <BookOpen className="w-3 h-3" strokeWidth={1.5} />
+                        <span>{new Date(article.publishedAt).toLocaleDateString("ru-RU", { day: "numeric", month: "long" })}</span>
+                      </div>
+                      <h4 
+                        className="text-base font-medium mb-2 transition-opacity" 
+                        style={{ color: "var(--color-text)", fontFamily: "var(--font-heading)", lineHeight: 1.4 }}
+                      >
+                        {article.title}
+                      </h4>
+                      <p 
+                        className="text-sm line-clamp-2" 
+                        style={{ color: "var(--color-text-secondary)", lineHeight: 1.6 }}
+                      >
+                        {article.excerpt}
+                      </p>
+                    </article>
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
         </div>
