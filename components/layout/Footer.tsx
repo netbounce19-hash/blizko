@@ -20,6 +20,7 @@ const footerSections = [
     links: [
       { href: "/about", label: "О специалисте" },
       { href: "/contact", label: "Связаться с нами" },
+      { href: "https://youtube.com/@supportclubblizko?si=YIgxykBl97wcGzA-", label: "Наш YouTube канал", external: true },
     ],
   },
   {
@@ -81,6 +82,8 @@ export function Footer() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
+                      target={link.external ? "_blank" : undefined}
+                      rel={link.external ? "noopener noreferrer" : undefined}
                       className="text-sm"
                       style={{
                         color: "var(--color-text-secondary)",

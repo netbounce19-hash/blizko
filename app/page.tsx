@@ -11,6 +11,7 @@ import {
   Heart,
   Sparkles,
   BookOpen,
+  Youtube,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { AudioCard } from "@/components/ui/AudioCard";
@@ -310,6 +311,49 @@ export default function HomePage() {
                   <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
                 </Button>
               </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* === YOUTUBE BANNER === */}
+      <section className="pb-16 md:pb-20">
+        <div className="container-site">
+          <div 
+            className="rounded-2xl p-8 md:p-12 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8"
+            style={{ 
+              backgroundColor: "rgba(217, 166, 121, 0.1)",
+            }}
+          >
+            <div className="relative z-10 max-w-xl text-center md:text-left">
+              <div className="flex items-center gap-3 mb-4 justify-center md:justify-start">
+                <Youtube className="w-7 h-7" style={{ color: "var(--color-accent-2)" }} strokeWidth={1.5} />
+                <h3 
+                  className="text-2xl md:text-3xl" 
+                  style={{ fontFamily: "var(--font-heading)", color: "var(--color-text)" }}
+                >
+                  Смотрите нас на YouTube
+                </h3>
+              </div>
+              <p 
+                className="text-base md:text-lg leading-relaxed mb-0" 
+                style={{ color: "var(--color-text-secondary)" }}
+              >
+                Я регулярно публикую видео-разборы, практические советы по психологии и ответы на частые вопросы. Подписывайтесь, чтобы всегда быть на связи и не пропускать полезные материалы.
+              </p>
+            </div>
+            
+            <div className="relative z-10 shrink-0">
+              <a 
+                href="https://youtube.com/@supportclubblizko?si=YIgxykBl97wcGzA-" 
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                <Button variant="secondary" size="lg">
+                  <Youtube className="w-5 h-5" strokeWidth={1.5} />
+                  Перейти на канал
+                </Button>
+              </a>
             </div>
           </div>
         </div>
