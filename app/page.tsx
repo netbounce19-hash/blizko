@@ -1,65 +1,454 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useState } from "react";
+import Link from "next/link";
+import {
+  Headphones,
+  ArrowRight,
+  MessageCircle,
+  Shield,
+  Heart,
+  Sparkles,
+  BookOpen,
+} from "lucide-react";
+import { Button } from "@/components/ui/Button";
+import { AudioCard } from "@/components/ui/AudioCard";
+import { AudioPlayer } from "@/components/ui/AudioPlayer";
+import { Modal, BottomSheet } from "@/components/ui/Modal";
+import { SubscriptionPaywall } from "@/components/ui/SubscriptionPaywall";
+import { mockTracks, specialistInfo } from "@/lib/mock-data";
+
+/* Главная страница платформы «БЛИЗКО» */
+
+export default function HomePage() {
+  const [activeTrack, setActiveTrack] = useState<(typeof mockTracks)[0] | null>(null);
+  const [showPaywall, setShowPaywall] = useState(false);
+
+  /* Показываем первые 6 треков на главной */
+  const featuredTracks = mockTracks.slice(0, 6);
+
+  const handlePlay = (track: (typeof mockTracks)[0]) => {
+    setActiveTrack(track);
+  };
+
+  const handleLimitReached = () => {
+    setShowPaywall(true);
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <>
+      {/* === HERO === */}
+      <section className="relative overflow-hidden">
+        <div
+          className="absolute inset-0 opacity-30"
+          style={{
+            background:
+              "radial-gradient(ellipse at 30% 20%, rgba(124, 152, 133, 0.12) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, rgba(217, 166, 121, 0.08) 0%, transparent 50%)",
+          }}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+        <div className="container-site relative">
+          <div className="py-20 md:py-28 lg:py-36 max-w-2xl">
+            <p
+              className="text-sm font-medium mb-4 tracking-wide uppercase"
+              style={{ color: "var(--color-accent)" }}
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              Аудио-терапия
+            </p>
+            <h1
+              className="text-4xl md:text-5xl lg:text-6xl mb-6"
+              style={{
+                fontFamily: "var(--font-heading)",
+                fontWeight: 400,
+                color: "var(--color-text)",
+                lineHeight: 1.15,
+              }}
             >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+              Ваш внутренний мир{" "}
+              <span style={{ color: "var(--color-accent)" }}>близко</span>
+            </h1>
+            <p
+              className="text-lg md:text-xl mb-8 leading-relaxed max-w-lg"
+              style={{
+                color: "var(--color-text-secondary)",
+                lineHeight: 1.7,
+              }}
+            >
+              Короткие терапевтические аудиоролики от клинического психолога.
+              Тревога, отношения, самооценка, сон — в вашем темпе, в вашем
+              пространстве.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <Link href="/library">
+                <Button variant="primary" size="lg">
+                  <Headphones className="w-4 h-4" strokeWidth={1.5} />
+                  Начать слушать
+                </Button>
+              </Link>
+              <Link href="/ask">
+                <Button variant="outline" size="lg">
+                  <MessageCircle className="w-4 h-4" strokeWidth={1.5} />
+                  Задать вопрос
+                </Button>
+              </Link>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* === СЕТКА АУДИО-КАРТОЧЕК === */}
+      <section className="py-16 md:py-20">
+        <div className="container-site">
+          <div className="flex items-end justify-between mb-10">
+            <div>
+              <p
+                className="text-sm font-medium mb-2 tracking-wide uppercase"
+                style={{ color: "var(--color-accent)" }}
+              >
+                Библиотека
+              </p>
+              <h2
+                className="text-2xl md:text-3xl"
+                style={{
+                  fontFamily: "var(--font-heading)",
+                  fontWeight: 400,
+                }}
+              >
+                Популярные практики
+              </h2>
+            </div>
+            <Link
+              href="/library"
+              className="hidden md:flex items-center gap-1 text-sm"
+              style={{
+                color: "var(--color-accent)",
+                transition: "opacity var(--transition-base)",
+              }}
+            >
+              Все ролики
+              <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {featuredTracks.map((track) => (
+              <AudioCard key={track.id} track={track} onPlay={handlePlay} />
+            ))}
+          </div>
+
+          <div className="md:hidden mt-6 text-center">
+            <Link href="/library">
+              <Button variant="outline" size="md">
+                Все ролики
+                <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
+              </Button>
+            </Link>
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* === О СПЕЦИАЛИСТЕ (краткий блок) === */}
+      <section
+        className="py-16 md:py-20"
+        style={{ backgroundColor: "var(--color-surface)" }}
+      >
+        <div className="container-site">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+            {/* Фото-заглушка */}
+            <div
+              className="aspect-[4/5] max-w-sm mx-auto lg:mx-0 rounded-2xl overflow-hidden"
+              style={{
+                backgroundColor: "var(--color-border)",
+                borderRadius: "var(--radius-lg)",
+                boxShadow: "var(--shadow-card)",
+              }}
+            >
+              <div className="w-full h-full flex items-center justify-center">
+                <div className="text-center p-6">
+                  <div
+                    className="w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center"
+                    style={{ backgroundColor: "rgba(124, 152, 133, 0.1)" }}
+                  >
+                    <Heart
+                      className="w-8 h-8"
+                      style={{ color: "var(--color-accent)" }}
+                      strokeWidth={1.5}
+                    />
+                  </div>
+                  <p
+                    className="text-sm"
+                    style={{ color: "var(--color-text-secondary)" }}
+                  >
+                    Фото специалиста
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <p
+                className="text-sm font-medium mb-2 tracking-wide uppercase"
+                style={{ color: "var(--color-accent)" }}
+              >
+                Ваш терапевт
+              </p>
+              <h2
+                className="text-2xl md:text-3xl mb-4"
+                style={{
+                  fontFamily: "var(--font-heading)",
+                  fontWeight: 400,
+                }}
+              >
+                {specialistInfo.shortName}
+              </h2>
+              <p
+                className="text-sm mb-2"
+                style={{ color: "var(--color-accent-2)" }}
+              >
+                {specialistInfo.title}
+              </p>
+              <p
+                className="mb-6 leading-relaxed"
+                style={{
+                  color: "var(--color-text-secondary)",
+                  lineHeight: 1.7,
+                }}
+              >
+                {specialistInfo.bio}
+              </p>
+
+              <div className="flex flex-wrap gap-2 mb-6">
+                {specialistInfo.specializations.map((spec) => (
+                  <span
+                    key={spec}
+                    className="text-xs px-3 py-1.5 rounded-full"
+                    style={{
+                      backgroundColor: "rgba(124, 152, 133, 0.08)",
+                      color: "var(--color-accent)",
+                    }}
+                  >
+                    {spec}
+                  </span>
+                ))}
+              </div>
+
+              <Link href="/about">
+                <Button variant="outline" size="md">
+                  Подробнее
+                  <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* === БЛОК ПОДПИСКИ === */}
+      <section className="py-16 md:py-20">
+        <div className="container-site">
+          <div
+            className="rounded-2xl p-8 md:p-12 text-center max-w-2xl mx-auto"
+            style={{
+              backgroundColor: "var(--color-white)",
+              boxShadow: "var(--shadow-card)",
+              borderRadius: "var(--radius-lg)",
+            }}
+          >
+            <div
+              className="w-12 h-12 rounded-full mx-auto mb-5 flex items-center justify-center"
+              style={{ backgroundColor: "rgba(124, 152, 133, 0.08)" }}
+            >
+              <Sparkles
+                className="w-5 h-5"
+                style={{ color: "var(--color-accent)" }}
+                strokeWidth={1.5}
+              />
+            </div>
+            <h2
+              className="text-2xl md:text-3xl mb-3"
+              style={{
+                fontFamily: "var(--font-heading)",
+                fontWeight: 400,
+              }}
+            >
+              Полный доступ к библиотеке
+            </h2>
+            <p
+              className="mb-6 max-w-md mx-auto leading-relaxed"
+              style={{
+                color: "var(--color-text-secondary)",
+                lineHeight: 1.7,
+              }}
+            >
+              Все аудио-практики, новые ролики каждую неделю и персональная
+              история прослушивания.
+            </p>
+            <p
+              className="text-3xl mb-6"
+              style={{
+                fontFamily: "var(--font-heading)",
+                fontWeight: 500,
+                color: "var(--color-text)",
+              }}
+            >
+              2 999 ₽
+              <span
+                className="text-base ml-1"
+                style={{ color: "var(--color-text-secondary)" }}
+              >
+                / месяц
+              </span>
+            </p>
+            <Link href="/subscribe">
+              <Button variant="primary" size="lg">
+                Оформить подписку
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* === CTA АНОНИМНОГО ВОПРОСА === */}
+      <section
+        className="py-16 md:py-20"
+        style={{ backgroundColor: "var(--color-surface)" }}
+      >
+        <div className="container-site">
+          <div className="max-w-xl mx-auto text-center">
+            <div
+              className="w-12 h-12 rounded-full mx-auto mb-5 flex items-center justify-center"
+              style={{ backgroundColor: "rgba(217, 166, 121, 0.1)" }}
+            >
+              <MessageCircle
+                className="w-5 h-5"
+                style={{ color: "var(--color-accent-2)" }}
+                strokeWidth={1.5}
+              />
+            </div>
+            <h2
+              className="text-2xl md:text-3xl mb-3"
+              style={{
+                fontFamily: "var(--font-heading)",
+                fontWeight: 400,
+              }}
+            >
+              Задайте анонимный вопрос
+            </h2>
+            <p
+              className="mb-6 leading-relaxed"
+              style={{
+                color: "var(--color-text-secondary)",
+                lineHeight: 1.7,
+              }}
+            >
+              Вы можете задать вопрос специалисту анонимно — без регистрации
+              и указания личных данных. Ответ придёт в формате персонального
+              аудио.
+            </p>
+            <Link href="/ask">
+              <Button variant="secondary" size="lg">
+                <MessageCircle className="w-4 h-4" strokeWidth={1.5} />
+                Задать вопрос
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* === INLINE PLAYER MODAL === */}
+      {/* Десктоп — Modal, мобильный — BottomSheet */}
+      <div className="hidden md:block">
+        <Modal
+          isOpen={!!activeTrack && !showPaywall}
+          onClose={() => setActiveTrack(null)}
+          title={activeTrack?.title}
+          maxWidth="520px"
+        >
+          {activeTrack && (
+            <div>
+              <p
+                className="text-sm mb-4 leading-relaxed"
+                style={{ color: "var(--color-text-secondary)" }}
+              >
+                {activeTrack.description}
+              </p>
+              <AudioPlayer
+                src={activeTrack.audioUrl}
+                title={activeTrack.title}
+                maxDurationSeconds={activeTrack.isFreePreview ? undefined : 60}
+                onLimitReached={handleLimitReached}
+              />
+              {!activeTrack.isFreePreview && (
+                <p
+                  className="text-xs text-center mt-3"
+                  style={{ color: "var(--color-text-secondary)" }}
+                >
+                  <Shield className="w-3 h-3 inline mr-1" strokeWidth={1.5} />
+                  Превью — первые 60 секунд. Оформите подписку для полного
+                  доступа.
+                </p>
+              )}
+              <div className="mt-4 text-center">
+                <Link href={`/library/${activeTrack.slug}`}>
+                  <Button variant="ghost" size="sm">
+                    <BookOpen className="w-4 h-4" strokeWidth={1.5} />
+                    Подробнее о ролике
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          )}
+        </Modal>
+      </div>
+
+      <div className="md:hidden">
+        <BottomSheet
+          isOpen={!!activeTrack && !showPaywall}
+          onClose={() => setActiveTrack(null)}
+          title={activeTrack?.title}
+        >
+          {activeTrack && (
+            <div>
+              <p
+                className="text-sm mb-4 leading-relaxed"
+                style={{ color: "var(--color-text-secondary)" }}
+              >
+                {activeTrack.description}
+              </p>
+              <AudioPlayer
+                src={activeTrack.audioUrl}
+                title={activeTrack.title}
+                maxDurationSeconds={activeTrack.isFreePreview ? undefined : 60}
+                onLimitReached={handleLimitReached}
+              />
+              <div className="mt-4 text-center">
+                <Link href={`/library/${activeTrack.slug}`}>
+                  <Button variant="ghost" size="sm">
+                    <BookOpen className="w-4 h-4" strokeWidth={1.5} />
+                    Подробнее о ролике
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          )}
+        </BottomSheet>
+      </div>
+
+      {/* Paywall модалка */}
+      <Modal
+        isOpen={showPaywall}
+        onClose={() => {
+          setShowPaywall(false);
+          setActiveTrack(null);
+        }}
+        maxWidth="420px"
+      >
+        <SubscriptionPaywall
+          onClose={() => {
+            setShowPaywall(false);
+            setActiveTrack(null);
+          }}
+        />
+      </Modal>
+    </>
   );
 }

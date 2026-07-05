@@ -1,0 +1,168 @@
+// Prisma Schema — Платформа «БЛИЗКО»
+// Модель данных для аудио-терапии, подписок, вопросов и записей
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// === Пользователь ===
+model User {
+  id                    String    @id @default(cuid())
+  email                 String    @unique
+  passwordHash          String?
+  name                  String?
+  image                 String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  subscriptionStatus    SubscriptionStatus @default(INACTIVE)
+  subscriptionExpiresAt DateTime?
+
+  // Связи
+  listeningProgress ListeningProgress[]
+  subscriptions     Subscription[]
+
+  @@map("users")
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  INACTIVE
+  CANCELLED
+  PAST_DUE
+}
+
+// === Аудиоролик ===
+model Track {
+  id              String   @id @default(cuid())
+  title           String
+  slug            String   @unique
+  description     String
+  fullDescription String?  @db.Text
+  audioUrl        String
+  coverUrl        String?
+  durationSeconds Int
+  tags            String[]
+  isFreePreview   Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Связи
+  listeningProgress ListeningProgress[]
+
+  @@map("tracks")
+}
+
+// === Прогресс прослушивания ===
+model ListeningProgress {
+  id              String   @id @default(cuid())
+  userId          String
+  trackId         String
+  progressSeconds Int      @default(0)
+  completed       Boolean  @default(false)
+  updatedAt       DateTime @updatedAt
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  track Track @relation(fields: [trackId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, trackId])
+  @@map("listening_progress")
+}
+
+// === Подписка ===
+model Subscription {
+  id               String             @id @default(cuid())
+  userId           String
+  provider         PaymentProvider
+  currency         Currency
+  amount           Int                // Сумма в минимальных единицах (копейки / центы)
+  status           SubscriptionPaymentStatus @default(PENDING)
+  externalId       String?            // ID в платёжной системе
+  currentPeriodEnd DateTime?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("subscriptions")
+}
+
+enum PaymentProvider {
+  YOOKASSA
+  STRIPE
+}
+
+enum Currency {
+  RUB
+  USD
+}
+
+enum SubscriptionPaymentStatus {
+  PENDING
+  ACTIVE
+  CANCELLED
+  FAILED
+}
+
+// === Анонимный вопрос ===
+model AnonymousQuestion {
+  id                   String         @id @default(cuid())
+  pseudonym            String
+  questionText         String         @db.Text
+  contactEmailOptional String?
+  status               QuestionStatus @default(NEW)
+  answerAudioUrl       String?
+  isPublishable        Boolean        @default(false)
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+
+  @@map("anonymous_questions")
+}
+
+enum QuestionStatus {
+  NEW
+  IN_PROGRESS
+  ANSWERED
+}
+
+// === Запись на консультацию ===
+model Booking {
+  id            String        @id @default(cuid())
+  name          String
+  contactInfo   String
+  format        BookingFormat
+  preferredTime String?
+  message       String?       @db.Text
+  status        BookingStatus @default(NEW)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@map("bookings")
+}
+
+enum BookingFormat {
+  ONLINE
+  OFFLINE
+}
+
+enum BookingStatus {
+  NEW
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+// === Сообщение обратной связи ===
+model ContactMessage {
+  id          String   @id @default(cuid())
+  name        String
+  contactInfo String
+  message     String   @db.Text
+  createdAt   DateTime @default(now())
+
+  @@map("contact_messages")
+}
