@@ -63,8 +63,8 @@ export default function HomePage() {
                 lineHeight: 1.15,
               }}
             >
-              Ваш внутренний мир{" "}
-              <span style={{ color: "var(--color-accent)" }}>близко</span>
+              Клуб поддержки{" "}
+              <span style={{ color: "var(--color-accent)" }}>БЛИЗКО</span>
             </h1>
             <p
               className="text-lg md:text-xl mb-8 leading-relaxed max-w-lg"

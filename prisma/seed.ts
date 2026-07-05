@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 
 const tracks = [
   {
-    title: "Мягкое дыхание при тревоге",
+    title: "Как не потерять себя в мире плохих новостей?",
     slug: "myagkoe-dyhanie-pri-trevoge",
     description:
       "Короткая практика дыхания для снижения тревожности. Подходит для моментов, когда тревога нарастает.",
@@ -19,7 +19,7 @@ const tracks = [
     isFreePreview: true,
   },
   {
-    title: "Границы в отношениях",
+    title: "Почему мне сложно радоваться?",
     slug: "granicy-v-otnosheniyah",
     description:
       "Как распознать нарушение личных границ и мягко заявить о своих потребностях.",
@@ -31,7 +31,7 @@ const tracks = [
     isFreePreview: false,
   },
   {
-    title: "Практика самоподдержки",
+    title: "Финансовые тревоги и как себя удержать в моменты упадка и трудностей?",
     slug: "praktika-samopodderzhki",
     description:
       "Учимся относиться к себе с теплом и принятием вместо привычной самокритики.",
@@ -43,7 +43,7 @@ const tracks = [
     isFreePreview: true,
   },
   {
-    title: "Восстановление после выгорания",
+    title: "Как оставаться собой в среде агрессивной и черствой?",
     slug: "vosstanovlenie-posle-vygoraniya",
     description:
       "Пошаговый план возвращения к ресурсному состоянию после эмоционального истощения.",
@@ -55,7 +55,7 @@ const tracks = [
     isFreePreview: false,
   },
   {
-    title: "Вечерняя практика для сна",
+    title: "Где искать любовь, когда вокруг сплошное притворство?",
     slug: "vechernyaya-praktika-dlya-sna",
     description:
       "Мягкая медитация перед сном с техникой прогрессивной мышечной релаксации.",
@@ -67,7 +67,7 @@ const tracks = [
     isFreePreview: false,
   },
   {
-    title: "Тело и эмоции: связь",
+    title: "Почему мне хочется всегда уехать в другой город/страну?",
     slug: "telo-i-emocii-svyaz",
     description:
       "Как тело хранит и выражает эмоции. Практика телесного сканирования.",
@@ -79,7 +79,7 @@ const tracks = [
     isFreePreview: true,
   },
   {
-    title: "Работа с чувством вины",
+    title: "Быть мамой подростка в современном мире. Каково это?",
     slug: "rabota-s-chuvstvom-viny",
     description:
       "Разбираемся с чувством вины: когда оно полезно, а когда разрушает.",
@@ -91,7 +91,7 @@ const tracks = [
     isFreePreview: false,
   },
   {
-    title: "Управление стрессом на работе",
+    title: "Как делать бизнес в среде неопределенностей и запретов?",
     slug: "upravlenie-stressom-na-rabote",
     description:
       "Экспресс-техники для снижения стресса, которые можно применять прямо на рабочем месте.",
