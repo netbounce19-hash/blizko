@@ -43,11 +43,12 @@ export function AudioCard({ track, onPlay }: AudioCardProps) {
     >
       {/* Обложка / цветовой блок */}
       <div
-        className="relative h-36 flex items-center justify-center"
+        className="relative h-36 flex items-center justify-center overflow-hidden"
         style={{
           background: `linear-gradient(135deg, var(--color-surface) 0%, ${getTagColor(track.tags[0])} 100%)`,
         }}
       >
+        <WaveformBackground />
         {/* Кнопка Play (появляется при наведении) */}
         <div
           className="w-12 h-12 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100"
@@ -126,3 +127,38 @@ function getTagColor(tag?: string): string {
   };
   return tag ? colors[tag] || "rgba(124, 152, 133, 0.08)" : "rgba(124, 152, 133, 0.08)";
 }
+
+/* Компонент фоновой текстуры в виде аудиоволны */
+function WaveformBackground() {
+  const heights = [
+    12, 24, 16, 32, 10, 28, 14, 36, 18, 26, 8, 30, 20, 12, 34, 16, 28, 10,
+    32, 22, 14, 38, 12, 26, 18, 34, 10, 30, 24, 16, 36, 14, 28, 20, 12, 32,
+    8, 26, 18, 34, 16, 30, 12, 28, 22, 14, 36, 10, 24, 18, 32, 16, 30, 12, 
+    26, 20, 14, 34, 8, 28
+  ];
+
+  return (
+    <div className="absolute inset-0 flex items-center justify-center opacity-[0.06] pointer-events-none" aria-hidden="true">
+      <svg 
+        width="100%" 
+        height="50%" 
+        viewBox="0 0 300 40" 
+        preserveAspectRatio="none"
+      >
+        <g fill="var(--color-text)">
+          {heights.map((h, i) => (
+            <rect 
+              key={i} 
+              x={i * 5} 
+              y={(40 - h) / 2} 
+              width="2.5" 
+              height={h} 
+              rx="1.25" 
+            />
+          ))}
+        </g>
+      </svg>
+    </div>
+  );
+}
+
