@@ -17,6 +17,20 @@ export interface MockTrack {
 }
 
 /* Демо-ролики — 8 штук, покрывающие основные темы */
+export const introTrack: MockTrack = {
+  id: "intro",
+  title: "Открытый мир",
+  slug: "otkrytiy-mir",
+  description: "Начните ваше знакомство с аудиотерапией",
+  fullDescription: "Знакомство с форматом аудиотерапии. В этом ролике мы подготовимся к практикам, настроимся на бережное отношение к себе.",
+  audioUrl: "/audio/placeholder.mp3",
+  coverUrl: "",
+  durationSeconds: 180,
+  tags: ["знакомство", "введение"],
+  isFreePreview: true,
+  createdAt: "2024-04-01",
+};
+
 export const mockTracks: MockTrack[] = [
   {
     id: "1",

@@ -18,7 +18,7 @@ import { AudioCard } from "@/components/ui/AudioCard";
 import { AudioPlayer } from "@/components/ui/AudioPlayer";
 import { Modal, BottomSheet } from "@/components/ui/Modal";
 import { SubscriptionPaywall } from "@/components/ui/SubscriptionPaywall";
-import { mockTracks, specialistInfo, mockArticles } from "@/lib/mock-data";
+import { mockTracks, specialistInfo, mockArticles, introTrack } from "@/lib/mock-data";
 
 /* Главная страница платформы «БЛИЗКО» */
 
@@ -49,70 +49,132 @@ export default function HomePage() {
           }}
         />
         <div className="container-site relative">
-          <div className="py-20 md:py-28 lg:py-36 max-w-2xl">
-            <p
-              className="text-sm font-medium mb-4 tracking-wide uppercase"
-              style={{ color: "var(--color-accent)" }}
-            >
-              Аудио-терапия
-            </p>
-            <h1
-              className="text-4xl md:text-5xl lg:text-6xl mb-6"
-              style={{
-                fontFamily: "var(--font-heading)",
-                fontWeight: 400,
-                color: "var(--color-text)",
-                lineHeight: 1.15,
-              }}
-            >
-              Клуб поддержки{" "}
-              <span style={{ color: "var(--color-accent)" }}>БЛИЗКО</span>
-            </h1>
-            <p
-              className="text-lg md:text-xl mb-8 leading-relaxed max-w-lg"
-              style={{
-                color: "var(--color-text-secondary)",
-                lineHeight: 1.7,
-              }}
-            >
-              Аудиотерапия от практикующего специалиста Любови Горской-Скрыпник. 
-              Короткие терапевтические аудиоролики: тревога, отношения, самооценка, сон — в вашем темпе и пространстве.
-            </p>
-            
-            <div className="flex flex-wrap gap-3 mb-10">
-              <Link href="/library">
-                <Button variant="primary" size="lg">
-                  <Headphones className="w-4 h-4" strokeWidth={1.5} />
-                  Начать слушать
-                </Button>
-              </Link>
-              <Link href="/ask">
-                <Button variant="outline" size="lg">
-                  <MessageCircle className="w-4 h-4" strokeWidth={1.5} />
-                  Задать вопрос
-                </Button>
-              </Link>
+          <div className="py-16 md:py-24 lg:py-32 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+            {/* Левая колонка - Текст и кнопки */}
+            <div className="lg:col-span-7 max-w-xl">
+              <p
+                className="text-sm font-medium mb-4 tracking-wide uppercase"
+                style={{ color: "var(--color-accent)" }}
+              >
+                Аудио-терапия
+              </p>
+              <h1
+                className="text-4xl md:text-5xl lg:text-6xl mb-6"
+                style={{
+                  fontFamily: "var(--font-heading)",
+                  fontWeight: 400,
+                  color: "var(--color-text)",
+                  lineHeight: 1.15,
+                }}
+              >
+                Клуб поддержки{" "}
+                <span style={{ color: "var(--color-accent)" }}>БЛИЗКО</span>
+              </h1>
+              <p
+                className="text-lg md:text-xl mb-8 leading-relaxed"
+                style={{
+                  color: "var(--color-text-secondary)",
+                  lineHeight: 1.7,
+                }}
+              >
+                Аудиотерапия от практикующего специалиста Любови Горской-Скрыпник. 
+                Короткие терапевтические аудиоролики: тревога, отношения, самооценка, сон — в вашем темпе и пространстве.
+              </p>
+              
+              <div className="flex flex-wrap gap-3 mb-10">
+                <Link href="/library">
+                  <Button variant="primary" size="lg">
+                    <Headphones className="w-4 h-4" strokeWidth={1.5} />
+                    Начать слушать
+                  </Button>
+                </Link>
+                <Link href="/ask">
+                  <Button variant="outline" size="lg">
+                    <MessageCircle className="w-4 h-4" strokeWidth={1.5} />
+                    Задать вопрос
+                  </Button>
+                </Link>
+              </div>
+
+              {/* Сноска - Дисклеймер */}
+              <div 
+                className="flex items-start gap-3 p-4 rounded-2xl" 
+                style={{ 
+                  backgroundColor: "rgba(124, 152, 133, 0.05)",
+                  border: "1px solid rgba(124, 152, 133, 0.15)"
+                }}
+              >
+                <Shield 
+                  className="w-5 h-5 flex-shrink-0 mt-0.5" 
+                  style={{ color: "var(--color-accent)" }} 
+                  strokeWidth={1.5} 
+                />
+                <p 
+                  className="text-sm leading-relaxed" 
+                  style={{ color: "var(--color-text-secondary)" }}
+                >
+                  Вы также можете прислать ваши вопросы анонимно и получить развернутые ответы в формате аудиопрактики.
+                </p>
+              </div>
             </div>
 
-            {/* Сноска - Дисклеймер */}
-            <div 
-              className="flex items-start gap-3 p-4 rounded-2xl max-w-lg" 
-              style={{ 
-                backgroundColor: "rgba(124, 152, 133, 0.05)",
-                border: "1px solid rgba(124, 152, 133, 0.15)"
-              }}
-            >
-              <Shield 
-                className="w-5 h-5 flex-shrink-0 mt-0.5" 
-                style={{ color: "var(--color-accent)" }} 
-                strokeWidth={1.5} 
-              />
-              <p 
-                className="text-sm leading-relaxed" 
-                style={{ color: "var(--color-text-secondary)" }}
+            {/* Правая колонка - Карточка "Открытый мир" */}
+            <div className="lg:col-span-5 lg:pl-8 xl:pl-12">
+              <div 
+                className="rounded-3xl p-8 relative overflow-hidden"
+                style={{ 
+                  backgroundColor: "var(--color-white)",
+                  boxShadow: "var(--shadow-card)",
+                  border: "1px solid var(--color-border)"
+                }}
               >
-                Вы также можете прислать ваши вопросы анонимно и получить развернутые ответы в формате аудиопрактики.
-              </p>
+                {/* Фоновый мягкий паттерн */}
+                <div 
+                  className="absolute -right-20 -top-20 w-64 h-64 rounded-full opacity-30"
+                  style={{ backgroundColor: "rgba(124, 152, 133, 0.15)", filter: "blur(40px)" }}
+                />
+                
+                <div className="relative z-10">
+                  <p 
+                    className="text-sm font-medium mb-2"
+                    style={{ color: "var(--color-accent-2)" }}
+                  >
+                    Начните ваше знакомство с аудиотерапией
+                  </p>
+                  <h3 
+                    className="text-2xl mb-4"
+                    style={{ fontFamily: "var(--font-heading)", color: "var(--color-text)" }}
+                  >
+                    Аудио «Открытый мир»
+                  </h3>
+                  
+                  <p 
+                    className="text-sm mb-8 leading-relaxed"
+                    style={{ color: "var(--color-text-secondary)" }}
+                  >
+                    Это специальный ролик-введение, созданный, чтобы помочь вам плавно и бережно войти в формат аудиотерапии.
+                  </p>
+
+                  <button
+                    onClick={() => handlePlay(introTrack)}
+                    className="w-full group flex items-center justify-center gap-3 py-4 px-6 rounded-2xl transition-all duration-300 relative overflow-hidden"
+                    style={{ backgroundColor: "var(--color-accent)" }}
+                  >
+                    <div 
+                      className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity"
+                    />
+                    <PlayCircle className="w-6 h-6 text-white" strokeWidth={1.5} />
+                    <span className="text-white font-medium text-lg">Слушать сейчас</span>
+                  </button>
+
+                  <div className="mt-6 flex gap-3 p-4 rounded-xl items-start" style={{ backgroundColor: "var(--color-surface)" }}>
+                    <Headphones className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: "var(--color-text-secondary)" }} strokeWidth={1.5} />
+                    <p className="text-xs leading-relaxed" style={{ color: "var(--color-text-secondary)" }}>
+                      Данное аудио желательно слушать в наушниках и в спокойной, комфортной обстановке, где вы сможете побыть наедине с собой.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
